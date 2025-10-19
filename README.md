@@ -1,57 +1,25 @@
-Exercise Tracker – Nutritionix & Sheety
-Description
+Workout Tracker
 
-* This Python script allows you to track your workouts easily. You input the exercises you’ve completed, and the script retrieves details like duration and calories burned from the Nutritionix API. It then logs the data into a Google Sheet via Sheety, automatically recording the date and time.
+* A Python script to track your workouts. Enter the exercises you completed, and it will calculate duration and calories burned using the Nutritionix API, then log the data to a Google Sheet via Sheety.
 
 Features
 
-* Tracks exercise name, duration, and calories.
+* Accepts natural language input for exercises
 
-* Automatically records date and time.
+* Calculates duration and calories burned automatically
 
-* Logs data into Google Sheets for easy tracking.
+* Logs workout data with date and time to a Google Sheet
 
-* Uses Nutritionix API for accurate exercise info.
+Get API keys
 
-* Simple, interactive console input.
+* Sign up for Nutritionix API
+* and get APP_ID and API_KEY.
 
-Requirements
+Set up a Sheety
+* project for your Google Sheet and get the Bearer Token.
 
-* Python 3.x
-
-* requests library
-
-* Nutritionix account (APP_ID & API_KEY)
-
-* Sheety account connected to a Google Sheet
-
-Setup
-
-* Clone this repository.
-
-* Install required Python libraries:
-
-* pip install requests
-
-
-Set up a Google Sheet and connect it to Sheety.
-
-* Update the APP_ID, API_KEY, and SHEETY_URL in the script.
-
-Run the script:
-
-* python exercise_tracker.py
-
-Usage
-
-* Run the script in a terminal or IDE.
-
-* Enter the exercises you completed when prompted, e.g., I ran for 20 minutes.
-
-* The script will fetch exercise data and log it to your Google Sheet.
-
-* Check your Google Sheet to see the new entry.
+* Enter the exercises you completed when prompted. Your workout will be logged automatically.
 
 License
 
-This project is open-source and free to use.
+* MIT License
