@@ -1,25 +1,27 @@
 import requests
 import datetime as dt
 
-# --- USER INPUT REQUIRED ---
+# ------------------ CONFIG ------------------
 APP_ID = "YOUR_NUTRITIONIX_APP_ID"
 API_KEY = "YOUR_NUTRITIONIX_API_KEY"
-SHEETY_URL = "YOUR_SHEETY_PROJECT_URL"
 
-GENDER = "male"       # Change if needed
-WEIGHT_KG = 70        # Enter your weight in kg
-HEIGHT_CM = 170       # Enter your height in cm
-AGE = 30              # Enter your age
+GENDER = "male"
+WEIGHT_KG = 85
+HEIGHT_CM = 171
+AGE = 41
+SHEETY_URL = "YOUR_SHEETY_ENDPOINT_URL"
+SHEETY_TOKEN = "YOUR_SHEETY_BEARER_TOKEN"
+# --------------------------------------------
 
 # Get current date and time
 today = dt.datetime.now()
 date = str(today.date())
 time = today.strftime("%H:%M:%S")
 
-# Nutritionix API URL
+# Nutritionix API endpoint
 URL = "https://trackapi.nutritionix.com/v2/natural/exercise"
 
-# Ask user which exercises they completed
+# User input
 query = input("Which exercises have you completed? ")
 
 params = {
@@ -29,21 +31,27 @@ params = {
     "age": AGE
 }
 
-header = {
+headers = {
     "Content-Type": "application/json",
     "x-app-id": APP_ID,
     "x-app-key": API_KEY
 }
 
-# Get exercise data from Nutritionix
-response = requests.post(url=URL, json=params, headers=header)
+# Send request to Nutritionix
+response = requests.post(url=URL, json=params, headers=headers)
 data = response.json()
 
-exercise = data["exercises"][0]["user_input"].title()
-duration = data["exercises"][0]["duration_min"]
-calories = data["exercises"][0]["nf_calories"]
+# Parse response safely
+if data.get("exercises"):
+    exercise_data = data["exercises"][0]
+    exercise = exercise_data.get("user_input", "Unknown").title()
+    duration = exercise_data.get("duration_min", 0)
+    calories = exercise_data.get("nf_calories", 0)
+else:
+    print("No exercise data found.")
+    exit()
 
-# Prepare workout data for Sheety
+# Prepare data for Sheety
 workout = {
     "date": date,
     "time": time,
@@ -52,11 +60,13 @@ workout = {
     "calories": calories
 }
 
-data_to_send = {
-    "workout": workout
+data_to_send = {"workout": workout}
+
+sheety_headers = {
+    "Authorization": f"Bearer {SHEETY_TOKEN}"
 }
 
 # Send data to Sheety
-sheety_response = requests.post(url=SHEETY_URL, json=data_to_send)
+sheety_response = requests.post(url=SHEETY_URL, json=data_to_send, headers=sheety_headers)
 
 print(sheety_response.text)
